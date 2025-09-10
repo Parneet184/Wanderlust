@@ -1,48 +1,79 @@
-<style>
-    .btn-search{
-        background-color: #fe424d;
-        color: #fff;
-        border-radius: 25px;
-        padding: 0 1rem 0 1rem;
-    }
-    .btn-search:hover {
-        background-color: #fe424d;
-        color: #fff;
-    }
-    .btn-search i {
-        display: inline;
-        margin-right: 0.5rem;
-    }
-</style>
-
+<link rel="stylesheet" href="../../public/stylesheets/style.css">
 <nav class="navbar navbar-expand-md bg-body-light border-bottom sticky-top">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="/listings"><i class="fa-regular fa-compass"></i></a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
-            aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-            <div class="navbar-nav">
-                <a class="nav-link" href="/listings">Explore</a>
-            </div>
-            <div class="navbar-nav ms-auto">
-                <form class="d-flex" role="search">
-                    <input class="form-control me-2" type="search" placeholder="Search destinations..." aria-label="Search" style="border-radius: 25px; padding: 0.5rem 3rem 0.5rem 3rem;" />
-                    <button class="btn btn-search" type="submit"><i class="fa-solid fa-magnifying-glass"></i>Search</button>
-                </form>
-            </div>
-            <!-- signup and login -->
-            <div class="navbar-nav ms-auto">
-                <a class="nav-link" href="/listings/new">Airbnb your home</a>
-                <% if(!currentUser){ %>
-                    <a class="nav-link" href="/signup"> <b>Sign Up</b></a>
-                    <a class="nav-link" href="/login"><b>Log in</b></a>
-                    <% } else { %>
-                        <span class="navbar-text me-2">Hello, <%= currentUser.username %>!</span>
-                        <a class="nav-link" href="/logout"><b>Log Out</b></a>
-                        <% } %>
+  <div class="container-fluid">
+    <!-- Brand -->
+    <!-- <a class="navbar-brand" href="/listings">
+      <img src="../assets/Wonderlust-3.png" alt="Wonderlust Logo">
+    </a> -->
+    <a class="navbar-brand" href="/listings" style="color: red; font-size: 30px;"><i class="fa-regular fa-compass"></i></a>
 
-            </div>
-        </div>
+    <!-- Left (always visible Explore) -->
+    <a class="nav-link d-none d-md-inline" href="/listings">Explore</a>
+
+    <!-- Desktop Search -->
+ 
+<form class="d-none d-md-flex col-2 p-2 desktop-input-search " role="search" action="/listings/search" method="GET">
+  <input class="form-control me-2 search-input" name="q" type="search" placeholder="Search destination"
+    aria-label="Search" />
+  <button class="btn btn-search" type="submit">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+</form>
+
+
+<div class="d-md-none d-flex align-items-center ms-auto mobile-input-search">
+  <!-- Collapsible search input -->
+  <form id="mobileSearchForm" class="mobile-search-form" action="/listings/search" method="GET">
+    <input class="form-control search-input" name="q" type="search" placeholder="Search destination"
+      aria-label="Search" />
+  </form>
+
+  <!-- Search icon (always on right side) -->
+  <button type="button" class="btn btn-search-icon" id="mobileSearchBtn">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+</div>
+
+
+
+
+    <!-- Toggler -->
+    <button class="navbar-toggler ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
+      aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav ms-auto">
+        <!-- Show Explore again on mobile inside collapse -->
+        <a class="nav-link d-md-none" href="/listings">Explore</a>
+
+        <!-- Right side links -->
+        <a class="nav-link" href="/listings/new">Airbnb your home</a>
+        <% if (!currUser) { %>
+          <a class="nav-link" href="/signup"><b>Sign Up</b></a>
+          <a class="nav-link" href="/login"><b>Login</b></a>
+          <% } %>
+            <% if (currUser) { %>
+              <a class="nav-link" href="/logout">Log Out</a>
+              <% } %>
+      </div>
+    </div>
+  </div>
 </nav>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const btn = document.getElementById("mobileSearchBtn");
+  const form = document.getElementById("mobileSearchForm");
+
+  btn.addEventListener("click", function () {
+    form.classList.toggle("show");
+    if (form.classList.contains("show")) {
+      form.querySelector("input").focus();
+    }
+  });
+});
+
+</script>

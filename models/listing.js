@@ -9,31 +9,60 @@ const listingSchema = new Schema({
     },
     description: String,
     image: {
-        url: String,
-        filename: String,
-    },
-    price: Number,
-    location: String,
-    country: String,
-    reviews: [
-        {
-        type: Schema.Types.ObjectId,
-        ref: 'Review'
-        },
-    ],
-    owner:{
-        type: Schema.Types.ObjectId,
-        ref: 'User'
-    }
-})
+        type: Object,
+        set: function (value) {
+            if (typeof value === "string") {
+                return {
+                    filename: String,
+                    url: value.trim() === ""
+                        ? "https://cdn.pixabay.com/photo/2018/08/29/09/27/india-3639503_960_720.jpg"
+                        : value
+                };
+            }
 
-listingSchema.post('findOneAndDelete', async (listing) =>   {
-    if (listing) {  
-        await Review.deleteMany({ _id: { $in: listing.reviews } });
+            if (value && typeof value === "object") {
+                return {
+                    filename: value.filename || null,
+                    url: !value.url || value.url.trim() === ""
+                        ? "https://cdn.pixabay.com/photo/2018/08/29/09/27/india-3639503_960_720.jpg"
+                        : value.url
+                };
+            }
+
+            return {
+                filename: null,
+                url: "https://cdn.pixabay.com/photo/2018/08/29/09/27/india-3639503_960_720.jpg"
+            };
+        }
+    },
+    price: {
+        type: Number,
+        required: true,
+    },
+    location: {
+        type: String,
+        required: true,
+    },
+    country: String,
+    reviews: [{
+        type: Schema.Types.ObjectId,
+        ref: "Review",
+    }],
+    owner: {
+        type: Schema.Types.ObjectId,
+        ref: "User",
+    },
+    category: {
+        type: String,
+        enum: ["trending","mountain", "rooms","iconic cities", "castles", "pools", "camping", "farms", "arctic"],
     }
 });
 
-const Listing = mongoose.model('Listing', listingSchema);    //create a model named listing from the schema, Mongoose automatically makes the name plural and lowercase
-module.exports = Listing;
+listingSchema.post("findOneAndDelete", async(listing) => {
+    if (listing) {
+        await Review.deleteMany({_id: { $in: listing.reviews}});
+    }
+});
 
  
+module.exports = mongoose.model("Listing", listingSchema);
