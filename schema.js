@@ -1,5 +1,5 @@
 const joi = require('joi');
-const { validCategories } = require('../validCategories');
+const { validCategories } = require('./validCategories');
 
 console.log("validCategories:", validCategories);
 module.exports.listingSchema = joi.object({
