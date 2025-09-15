@@ -26,7 +26,6 @@
                 <%= listing.country %>
             </p>
 
-            <% if ( currUser && currUser._id.equals(listing.owner._id) ) { %>
 
                 <div class="card_actions">
                     <a href="/listings/<%= listing._id %>/edit" class="btn btn-primary">Edit</a>
@@ -35,7 +34,6 @@
                     </form>
                 </div>
 
-                <% } %>
 
         </div>
         <% if(currUser) { %>
