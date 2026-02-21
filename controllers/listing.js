@@ -25,23 +25,53 @@ module.exports.newForm = (req, res) => {
     res.render("new"); // Make sure you have views/new.ejs
 };
 
+// module.exports.showListing = async (req, res) => {
+//     console.log("Route Params:", req.params); // Debugging log
+//     let { id } = req.params;
+//     const listing = await Listing.findById(id)
+//         .populate({
+//             path: "reviews",
+//             populate: {
+//                 path: "author"
+//             },
+//         })
+//         .populate("owner");
+//     if (!listing) {
+//         req.flash("error", "Listing does not exist.");
+//         return res.redirect("/listings"); 
+//     }
+
+//     res.render("show", { listing })
+// };
 module.exports.showListing = async (req, res) => {
-    console.log("Route Params:", req.params); // Debugging log
     let { id } = req.params;
+
     const listing = await Listing.findById(id)
         .populate({
             path: "reviews",
-            populate: {
-                path: "author"
-            },
+            populate: { path: "author" },
         })
         .populate("owner");
+
     if (!listing) {
         req.flash("error", "Listing does not exist.");
-        return res.redirect("/listings"); 
+        return res.redirect("/listings");
     }
 
-    res.render("show", { listing })
+    let predictedPrice = null;
+
+    try {
+        const response = await axios.post("https://house-prediction-ml-xbuo.onrender.com/predict", {
+            location: listing.location,
+            country: listing.country
+        });
+
+        predictedPrice = response.data.predicted_price;
+    } catch (error) {
+        console.log("ML API Error:", error.message);
+    }
+
+    res.render("show", { listing, predictedPrice });
 };
 
 module.exports.createListing = async (req, res) => {
@@ -63,6 +93,7 @@ module.exports.editListing = async (req, res) => {
         req.flash("error", "Listing you requested for does not exist!");
         res.redirect("/listings");
     }
+
     let originalImageUrl = listing.image.url;
     originalImageUrl = originalImageUrl.replace("/upload", "/upload/c_fill,h_300,w_250,f_auto"
     )

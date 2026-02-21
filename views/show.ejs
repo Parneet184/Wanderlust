@@ -14,11 +14,32 @@
             <p class="card_text">
                 <%= listing.description %>
             </p>
-             <p class="card_text">
+            <p class="card_text">
                 <%= listing.category %>
             </p>
-            <p class="card_text">₹ <%= listing.price.toLocaleString("en-IN") %>
-            </p>
+            <!-- <p class="card_text">₹ <%= listing.price.toLocaleString("en-IN") %>
+            </p> -->
+            <div class="price-section">
+                <div class="actual-price">
+                    ₹ <%= listing.price.toLocaleString("en-IN") %>
+                        <span class="per-night">/ night</span>
+                </div>
+
+                <% if (predictedPrice !==null && predictedPrice !==undefined) { %>
+                    <div class="predicted-box">
+                        <span class="ai-label">AI Predicted Price</span>
+                        ₹ <%= predictedPrice.toLocaleString("en-IN") %>
+
+                            <% if (predictedPrice> listing.price) { %>
+                                <span class="price-up">↑ Higher</span>
+                                <% } else if (predictedPrice < listing.price) { %>
+                                    <span class="price-down">↓ Lower</span>
+                                    <% } else { %>
+                                        <span class="price-equal">✔ Fair</span>
+                                        <% } %>
+                    </div>
+                    <% } %>
+            </div>
             <p class="card_text">
                 <%= listing.location %>
             </p>
@@ -27,12 +48,12 @@
             </p>
 
 
-                <div class="card_actions">
-                    <a href="/listings/<%= listing._id %>/edit" class="btn btn-primary">Edit</a>
-                    <form method="post" action="/listings/<%= listing._id %>?_method=delete" style="display: inline;">
-                        <button type="submit" class="btn btn-danger">Delete</button>
-                    </form>
-                </div>
+            <div class="card_actions">
+                <a href="/listings/<%= listing._id %>/edit" class="btn btn-primary">Edit</a>
+                <form method="post" action="/listings/<%= listing._id %>?_method=delete" style="display: inline;">
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+            </div>
 
 
         </div>

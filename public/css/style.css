@@ -471,3 +471,54 @@ footer {
     margin-left: 30%;
 }
 
+.price-section {
+    margin: 15px 0;
+    padding: 12px 16px;
+    border-radius: 12px;
+    background: #f8f9fa;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
+}
+
+.actual-price {
+    font-size: 22px;
+    font-weight: 700;
+    color: #222;
+}
+
+.per-night {
+    font-size: 14px;
+    font-weight: 400;
+    color: #777;
+}
+
+.predicted-box {
+    margin-top: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    color: #ff385c; /* Airbnb style */
+}
+
+.ai-label {
+    font-size: 13px;
+    font-weight: 500;
+    color: #555;
+    margin-right: 5px;
+}
+
+.price-up {
+    color: #dc3545;
+    margin-left: 8px;
+    font-weight: 600;
+}
+
+.price-down {
+    color: #28a745;
+    margin-left: 8px;
+    font-weight: 600;
+}
+
+.price-equal {
+    color: #007bff;
+    margin-left: 8px;
+    font-weight: 600;
+}
