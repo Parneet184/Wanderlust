@@ -1,4 +1,5 @@
 const Listing = require("../models/listing");
+const axios = require("axios");
 
 module.exports.index = async (req, res) => {
     const { category } = req.query;
@@ -67,6 +68,7 @@ module.exports.showListing = async (req, res) => {
         });
 
         predictedPrice = response.data.predicted_price;
+        console.log("ML Prediction: ", predictedPrice);
     } catch (error) {
         console.log("ML API Error:", error.message);
     }
